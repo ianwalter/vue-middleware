@@ -1,6 +1,6 @@
 {
   "name": "@appjumpstart/mercury-vue",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An Express/Connect-compatible middleware for easy Vue.js Server-Side Rendering (SSR)",
   "main": "index.js",
   "directories": {
@@ -24,8 +24,9 @@
   "author": "Ian Walter <public@iankwalter.com> (https://iankwalter.com)",
   "license": "ISC",
   "dependencies": {
-    "vue-server-renderer": "^2.5.16",
-    "@appjumpstart/mercury-webpack": "^1.0.0"
+    "@appjumpstart/mercury-webpack": "^1.0.0",
+    "common-tags": "^1.7.2",
+    "vue-server-renderer": "^2.5.16"
   },
   "devDependencies": {
     "jest": "^22.4.3"
