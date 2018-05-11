@@ -23,13 +23,18 @@
   ],
   "author": "Ian Walter <public@iankwalter.com> (https://iankwalter.com)",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:appjumpstart/mercury-vue.git"
+  },
   "dependencies": {
-    "@appjumpstart/mercury-webpack": "^1.0.0",
+    "@appjumpstart/mercury-webpack": "^1.0.1",
     "common-tags": "^1.7.2",
     "vue-server-renderer": "^2.5.16"
   },
   "devDependencies": {
-    "jest": "^22.4.3"
+    "jest": "^22.4.3",
+    "np": "^2.20.1"
   },
   "jest": {
     "testEnvironment": "node"
