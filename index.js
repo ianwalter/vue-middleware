@@ -81,12 +81,17 @@ module.exports = function mercuryVue (options) {
   }
 
   // Renders a page based on the request context and sends it to the client.
-  async function sendPage (req, res) {
+  async function sendPage (req, res, next) {
     // Create the context object used to pass data to the renderer.
     const context = createContext(req, res)
 
-    // Use the renderer to generate HTML and send it to the client.
-    res.type('text/html').send(await renderer.renderToString(context))
+    try {
+      // Use the renderer to generate HTML and send it to the client.
+      const html = await renderer.renderToString(context)
+      res.type('text/html').send(html)
+    } catch (err) {
+      next(err)
+    }
   }
 
   async function mercuryVueMiddleware (err, req, res, next) {
@@ -100,7 +105,7 @@ module.exports = function mercuryVue (options) {
         if (renderer) {
           // If the renderer already exists, go ahead and generate the page and
           // send it in the response.
-          sendPage(req, res)
+          sendPage(req, res, next)
         } else {
           // Notify the user that the middleware is waiting for the renderer to
           // be created.
@@ -113,7 +118,7 @@ module.exports = function mercuryVue (options) {
             tries++
             if (renderer) {
               clearInterval(rendererCheckInterval)
-              sendPage(req, res)
+              sendPage(req, res, next)
             } else if (tries === rendererCheckTries) {
               clearInterval(rendererCheckInterval)
               next(createRendererErr)
