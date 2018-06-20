@@ -15,6 +15,10 @@ module.exports = function mercuryVue (options) {
 
   // Destructure options into variables with defaults.
   const {
+    // TODO:
+    serverConfig,
+    // TODO:
+    clientConfig,
     // The ouput directory specified in the serverBundle's webpack config.
     distPath = join(basedir, 'dist'),
     // The path to the index.html that will be used as a page template.
@@ -41,52 +45,67 @@ module.exports = function mercuryVue (options) {
     defaultLanguage = 'en'
   } = options
 
-  // Set serverBundle and clientManifest paths.
-  const bundlePath = join(distPath, 'vue-ssr-server-bundle.json')
-  const manifestPath = join(distPath, staticDir, 'vue-ssr-client-manifest.json')
+  // TODO:
+  const keys = Array.isArray(serverConfig)
+    ? serverConfig.map(c => c.name)
+    : ['default']
 
   // Update the renderer when the serverBundle or clientManifest changes.
-  let renderer
-  let serverBundle
-  let clientManifest
-  function updateRenderer () {
-    renderer = createBundleRenderer(serverBundle, {
-      runInNewContext: false,
-      template: readFileSync(templatePath, 'utf-8'),
-      basedir,
-      clientManifest
+  let renderers = {}
+  let serverBundles = {}
+  let clientManifests = {}
+  function updateRenderers () {
+    keys.forEach(key => {
+      renderers[key] = createBundleRenderer(serverBundles[key], {
+        runInNewContext: false,
+        template: readFileSync(templatePath, 'utf-8'),
+        basedir,
+        clientManifest: clientManifests[key]
+      })
     })
   }
 
   let createRendererErr
-  let mercuryWebpackMiddleware
-  if (development) {
-    // Create an error message for the case when a render
-    createRendererErr = new Error(oneLineTrim`
-      Renderer was not created after ${rendererCheckTries * 100 / 1000}s.
-    `)
+  let mercuryWebpackMiddlewares = {}
+  keys.forEach(key => {
+    // Set serverBundle and clientManifest paths.
+    const bundleName = key === 'default'
+      ? 'vue-ssr-server-bundle.json'
+      : `vue-ssr-server-bundle.${key}.json`
+    const bundlePath = join(distPath, bundleName)
+    const manifestName = key === 'default'
+      ? 'vue-ssr-client-manifest.json'
+      : `vue-ssr-client-manifest.${key}.json`
+    const manifestPath = join(distPath, staticDir, manifestName)
 
-    // Initialize the mercury-webpack middleware with hooks to update the
-    // renderer when webpack-dev-server has re-generated the serverBundle or
-    // clientManifest.
-    mercuryWebpackMiddleware = mercuryWebpack({
-      ...options,
-      serverHook: function webpackServerHook (mfs) {
-        serverBundle = JSON.parse(mfs.readFileSync(bundlePath))
-        updateRenderer()
-      },
-      clientHook: function webpackClientHook ({ fileSystem }) {
-        clientManifest = JSON.parse(fileSystem.readFileSync(manifestPath))
-        updateRenderer()
-      }
-    })
-  } else {
-    // If not in development mode, use the pre-built serverBundle and
-    // clientManfiest to create the renderer.
-    serverBundle = require(bundlePath)
-    clientMaifest = require(manifestPath)
-    updateRenderer()
-  }
+    if (development) {
+      // Create an error message for the case when a render
+      createRendererErr = new Error(oneLineTrim`
+        Renderer was not created after ${rendererCheckTries * 100 / 1000}s.
+      `)
+
+      // Initialize the mercury-webpack middleware with hooks to update the
+      // renderer when webpack-dev-server has re-generated the serverBundle or
+      // clientManifest.
+      mercuryWebpackMiddlewares[key] = mercuryWebpack({
+        ...options,
+        serverHook: function webpackServerHook (mfs) {
+          serverBundle = JSON.parse(mfs.readFileSync(bundlePath))
+          updateRenderers()
+        },
+        clientHook: function webpackClientHook ({ fileSystem }) {
+          clientManifest = JSON.parse(fileSystem.readFileSync(manifestPath))
+          updateRenderers()
+        }
+      })
+    } else {
+      // If not in development mode, use the pre-built serverBundle and
+      // clientManfiest to create the renderer.
+      serverBundle[key] = require(bundlePath)
+      clientMaifest[key] = require(manifestPath)
+      updateRenderers()
+    }
+  })
 
   // Renders a page based on the request context and sends it to the client.
   async function sendPage (req, res, next) {
