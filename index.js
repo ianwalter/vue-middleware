@@ -114,18 +114,7 @@ module.exports = function mercuryVue (options) {
 
     try {
       // Use the renderer to generate HTML and send it to the client.
-      let html = await renderer.renderToString(context)
-
-      // If there are multiple supported languages, try to determine the
-      // preferred language from the Accept-Language header. If the preferred
-      // language is supported, rewrite the HTML so that it loads the matching
-      // bundle otherwise default to English.
-      if (supportedLanguages.length > 1) {
-        const headerValue = req.headers['accept-language']
-        const language = pick(supportedLanguages, headerValue, { loose: true })
-        html = html.replace(languageRegex, `$1${language || defaultLanguage}$3`)
-      }
-
+      let html = await renderers[req.languageCode].renderToString(context)
       res.type('text/html').send(html)
     } catch (err) {
       next(err)
@@ -140,7 +129,7 @@ module.exports = function mercuryVue (options) {
       next(err)
     } else {
       try {
-        if (renderer) {
+        if (renderers[req.languageCode]) {
           // If the renderer already exists, go ahead and generate the page and
           // send it in the response.
           sendPage(req, res, next)
@@ -154,7 +143,7 @@ module.exports = function mercuryVue (options) {
           let tries = 0
           let rendererCheckInterval = setInterval(() => {
             tries++
-            if (renderer) {
+            if (renderers[req.languageCode]) {
               clearInterval(rendererCheckInterval)
               sendPage(req, res, next)
             } else if (tries === rendererCheckTries) {
@@ -173,6 +162,20 @@ module.exports = function mercuryVue (options) {
   // request through the mercury-webpack middleware if in development mode
   // before routing the request through the mercury-vue middleware.
   return function mercuryVuePassthrough (req, res, next) {
+    // TODO:
+    let mercuryWebpackMiddleware = mercuryWebpackMiddlewares['default']
+
+    // If there are multiple supported languages, try to determine the
+    // preferred language from the Accept-Language header. If the preferred
+    // language is supported, TODO:
+    // otherwise default to English.
+    if (supportedLanguages.length > 1) {
+      const headerValue = req.headers['accept-language']
+      const language = pick(supportedLanguages, headerValue, { loose: true })
+      req.languageCode = language || defaultLanguage
+      mercuryWebpackMiddleware = mercuryWebpackMiddlewares[req.languageCode]
+    }
+
     if (mercuryWebpackMiddleware) {
       const mercuryVueNext = err => mercuryVueMiddleware(err, req, res, next)
       mercuryWebpackMiddleware(req, res, mercuryVueNext)
