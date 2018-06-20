@@ -4,6 +4,7 @@ const { oneLineTrim } = require('common-tags')
 
 const mercuryWebpack = require('@appjumpstart/mercury-webpack')
 const { createBundleRenderer } = require('vue-server-renderer')
+const languageParser = require('accept-language-parser')
 
 const { NODE_ENV } = process.env
 
@@ -20,7 +21,7 @@ module.exports = function mercuryVue (options) {
     templatePath = join(basedir, 'index.html'),
     // A function used to extract data form the request in order to render a
     // page specific to that request.
-    createContext = (req, res) => ({ url: req.url }),
+    createContext = req => ({ url: req.url }),
     // A boolean describing whether to operate in development mode or not.
     development = !NODE_ENV || NODE_ENV === 'development',
     // The name of the directory within the dist directory used for static
@@ -29,8 +30,15 @@ module.exports = function mercuryVue (options) {
     // The max amount of 100ms tries that the middleware should attempt to
     // wait for the renderer to be created.
     rendererCheckTries = 600,
-    // An logger instance used to output information.
-    logger = console
+    // A logger instance used to output information.
+    logger = console,
+    // An array of language codes that are supported by the application.
+    supportedLanguages = [],
+    // A regex used to replace the language code in the generated Webpack files.
+    languageRegex = /(\.)([a-z]{2,})(\.js)/gm,
+    // The language code to default to if a request's preferred language isn't
+    // supported by the application.
+    defaultLanguage = 'en'
   } = options
 
   // Set serverBundle and clientManifest paths.
@@ -88,6 +96,18 @@ module.exports = function mercuryVue (options) {
     try {
       // Use the renderer to generate HTML and send it to the client.
       const html = await renderer.renderToString(context)
+
+      // If there are multiple supported languages, try to determine the
+      // preferred language from the Accept-Language header. If the preferred
+      // language is supported, rewrite the HTML so that it loads the matching
+      // bundle otherwise default to English.
+      if (supportedLanguages.length > 1) {
+        const languageHeader = req.headers['accept-language']
+        const language = languageParser.pick(supportedLanguages, languageHeader)
+        const code = language.code || defaultLanguage
+        html = html.replace(languageRegex, `$1${code}$3`)
+      }
+
       res.type('text/html').send(html)
     } catch (err) {
       next(err)
