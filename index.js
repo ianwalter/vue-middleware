@@ -4,7 +4,7 @@ const { oneLineTrim } = require('common-tags')
 
 const mercuryWebpack = require('@appjumpstart/mercury-webpack')
 const { createBundleRenderer } = require('vue-server-renderer')
-const languageParser = require('accept-language-parser')
+const { pick } = require('accept-language-parser')
 
 const { NODE_ENV } = process.env
 
@@ -95,17 +95,16 @@ module.exports = function mercuryVue (options) {
 
     try {
       // Use the renderer to generate HTML and send it to the client.
-      const html = await renderer.renderToString(context)
+      let html = await renderer.renderToString(context)
 
       // If there are multiple supported languages, try to determine the
       // preferred language from the Accept-Language header. If the preferred
       // language is supported, rewrite the HTML so that it loads the matching
       // bundle otherwise default to English.
       if (supportedLanguages.length > 1) {
-        const languageHeader = req.headers['accept-language']
-        const language = languageParser.pick(supportedLanguages, languageHeader)
-        const code = language.code || defaultLanguage
-        html = html.replace(languageRegex, `$1${code}$3`)
+        const headerValue = req.headers['accept-language']
+        const language = pick(supportedLanguages, headerValue, { loose: true })
+        html = html.replace(languageRegex, `$1${language || defaultLanguage}$3`)
       }
 
       res.type('text/html').send(html)
