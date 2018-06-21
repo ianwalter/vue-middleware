@@ -15,6 +15,8 @@ module.exports = function mercuryVue (options) {
 
   // Destructure options into variables with defaults.
   const {
+    // The server's Webpack config.
+    serverConfig,
     // The ouput directory specified in the serverBundle's webpack config.
     distPath = join(basedir, 'dist'),
     // The path to the index.html that will be used as a page template.
@@ -27,66 +29,80 @@ module.exports = function mercuryVue (options) {
     // The name of the directory within the dist directory used for static
     // assets.
     staticDir = 'static',
-    // The max amount of 100ms tries that the middleware should attempt to
+    // The max amount of 100ms attempts that the middleware should attempt to
     // wait for the renderer to be created.
-    rendererCheckTries = 600,
+    rendererCheckAttempts = 600,
     // A logger instance used to output information.
     logger = console,
     // An array of language codes that are supported by the application.
     supportedLanguages = [],
-    // A regex used to replace the language code in the generated Webpack files.
-    languageRegex = /(\.)([a-z]{2,})(\.js)/gm,
     // The language code to default to if a request's preferred language isn't
     // supported by the application.
     defaultLanguage = 'en'
   } = options
 
-  // Set serverBundle and clientManifest paths.
-  const bundlePath = join(distPath, 'vue-ssr-server-bundle.json')
-  const manifestPath = join(distPath, staticDir, 'vue-ssr-client-manifest.json')
+  // Create the keys array used to create the necessary renderers based on
+  // whether the serverConfig is a multi-compiler config or not.
+  const keys = Array.isArray(serverConfig)
+    ? serverConfig.map(c => c.name)
+    : ['default']
 
   // Update the renderer when the serverBundle or clientManifest changes.
-  let renderer
-  let serverBundle
-  let clientManifest
-  function updateRenderer () {
-    renderer = createBundleRenderer(serverBundle, {
+  let renderers = {}
+  let serverBundles = {}
+  let clientManifests = {}
+  function updateRenderer (key) {
+    renderers[key] = createBundleRenderer(serverBundles[key], {
       runInNewContext: false,
       template: readFileSync(templatePath, 'utf-8'),
       basedir,
-      clientManifest
+      clientManifest: clientManifests[key]
     })
   }
 
   let createRendererErr
-  let mercuryWebpackMiddleware
-  if (development) {
-    // Create an error message for the case when a render
-    createRendererErr = new Error(oneLineTrim`
-      Renderer was not created after ${rendererCheckTries * 100 / 1000}s.
-    `)
+  let mercuryWebpackMiddlewares = {}
+  keys.forEach(key => {
+    // Set serverBundle and clientManifest paths.
+    const bundleName = key === 'default'
+      ? 'vue-ssr-server-bundle.json'
+      : `vue-ssr-server-bundle.${key}.json`
+    const bundlePath = join(distPath, bundleName)
+    const manifestName = key === 'default'
+      ? 'vue-ssr-client-manifest.json'
+      : `vue-ssr-client-manifest.${key}.json`
+    const manifestPath = join(distPath, staticDir, manifestName)
 
-    // Initialize the mercury-webpack middleware with hooks to update the
-    // renderer when webpack-dev-server has re-generated the serverBundle or
-    // clientManifest.
-    mercuryWebpackMiddleware = mercuryWebpack({
-      ...options,
-      serverHook: function webpackServerHook (mfs) {
-        serverBundle = JSON.parse(mfs.readFileSync(bundlePath))
-        updateRenderer()
-      },
-      clientHook: function webpackClientHook ({ fileSystem }) {
-        clientManifest = JSON.parse(fileSystem.readFileSync(manifestPath))
-        updateRenderer()
-      }
-    })
-  } else {
-    // If not in development mode, use the pre-built serverBundle and
-    // clientManfiest to create the renderer.
-    serverBundle = require(bundlePath)
-    clientMaifest = require(manifestPath)
-    updateRenderer()
-  }
+    if (development) {
+      // Create an error message for the case when the renderer hasn't been
+      // created after the max number of check attempts.
+      createRendererErr = new Error(oneLineTrim`
+        Renderer was not created after ${rendererCheckAttempts * 100 / 1000}s.
+      `)
+
+      // Initialize the mercury-webpack middleware with hooks to update the
+      // renderer when webpack-dev-server has re-generated the serverBundle or
+      // clientManifest.
+      mercuryWebpackMiddlewares[key] = mercuryWebpack({
+        ...options,
+        serverHook: function webpackServerHook (mfs) {
+          serverBundles[key] = JSON.parse(mfs.readFileSync(bundlePath))
+          updateRenderer(key)
+        },
+        clientHook: function webpackClientHook ({ fileSystem }) {
+          const manifest = fileSystem.readFileSync(manifestPath)
+          clientManifests[key] = JSON.parse(manifest)
+          updateRenderer(key)
+        }
+      })
+    } else {
+      // If not in development mode, use the pre-built serverBundle and
+      // clientManfiest to create the renderer.
+      serverBundle[key] = require(bundlePath)
+      clientMaifest[key] = require(manifestPath)
+      updateRenderer(key)
+    }
+  })
 
   // Renders a page based on the request context and sends it to the client.
   async function sendPage (req, res, next) {
@@ -95,18 +111,7 @@ module.exports = function mercuryVue (options) {
 
     try {
       // Use the renderer to generate HTML and send it to the client.
-      let html = await renderer.renderToString(context)
-
-      // If there are multiple supported languages, try to determine the
-      // preferred language from the Accept-Language header. If the preferred
-      // language is supported, rewrite the HTML so that it loads the matching
-      // bundle otherwise default to English.
-      if (supportedLanguages.length > 1) {
-        const headerValue = req.headers['accept-language']
-        const language = pick(supportedLanguages, headerValue, { loose: true })
-        html = html.replace(languageRegex, `$1${language || defaultLanguage}$3`)
-      }
-
+      let html = await renderers[req.languageCode].renderToString(context)
       res.type('text/html').send(html)
     } catch (err) {
       next(err)
@@ -121,7 +126,7 @@ module.exports = function mercuryVue (options) {
       next(err)
     } else {
       try {
-        if (renderer) {
+        if (renderers[req.languageCode]) {
           // If the renderer already exists, go ahead and generate the page and
           // send it in the response.
           sendPage(req, res, next)
@@ -131,14 +136,14 @@ module.exports = function mercuryVue (options) {
           logger.info('Waiting for the renderer to be created...')
 
           // Check for the renderer to be defined in 100ms intervals up until
-          // the max tries is reached.
-          let tries = 0
+          // the max number of attempts is reached.
+          let attempts = 0
           let rendererCheckInterval = setInterval(() => {
-            tries++
-            if (renderer) {
+            attempts++
+            if (renderers[req.languageCode]) {
               clearInterval(rendererCheckInterval)
               sendPage(req, res, next)
-            } else if (tries === rendererCheckTries) {
+            } else if (attempts === rendererCheckAttempts) {
               clearInterval(rendererCheckInterval)
               next(createRendererErr)
             }
@@ -154,6 +159,20 @@ module.exports = function mercuryVue (options) {
   // request through the mercury-webpack middleware if in development mode
   // before routing the request through the mercury-vue middleware.
   return function mercuryVuePassthrough (req, res, next) {
+    // Default to the single compiler MercuryWebpackMiddleware instance.
+    let mercuryWebpackMiddleware = mercuryWebpackMiddlewares['default']
+
+    // If there are multiple supported languages, try to determine the
+    // preferred language from the Accept-Language header. If the preferred
+    // language is supported, add it (or the default language) to the request so
+    // that the matching middleware can be used to serve the request.
+    if (supportedLanguages.length > 1) {
+      const headerValue = req.headers['accept-language']
+      const language = pick(supportedLanguages, headerValue, { loose: true })
+      req.languageCode = language || defaultLanguage
+      mercuryWebpackMiddleware = mercuryWebpackMiddlewares[req.languageCode]
+    }
+
     if (mercuryWebpackMiddleware) {
       const mercuryVueNext = err => mercuryVueMiddleware(err, req, res, next)
       mercuryWebpackMiddleware(req, res, mercuryVueNext)
