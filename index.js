@@ -15,7 +15,7 @@ module.exports = function mercuryVue (options) {
 
   // Destructure options into variables with defaults.
   const {
-    // TODO:
+    // The server's Webpack config.
     serverConfig,
     // The ouput directory specified in the serverBundle's webpack config.
     distPath = join(basedir, 'dist'),
@@ -41,7 +41,8 @@ module.exports = function mercuryVue (options) {
     defaultLanguage = 'en'
   } = options
 
-  // TODO:
+  // Create the keys array used to create the necessary renderers based on
+  // whether the serverConfig is a multi-compiler config or not.
   const keys = Array.isArray(serverConfig)
     ? serverConfig.map(c => c.name)
     : ['default']
@@ -158,13 +159,13 @@ module.exports = function mercuryVue (options) {
   // request through the mercury-webpack middleware if in development mode
   // before routing the request through the mercury-vue middleware.
   return function mercuryVuePassthrough (req, res, next) {
-    // TODO:
+    // Default to the single compiler MercuryWebpackMiddleware instance.
     let mercuryWebpackMiddleware = mercuryWebpackMiddlewares['default']
 
     // If there are multiple supported languages, try to determine the
     // preferred language from the Accept-Language header. If the preferred
-    // language is supported, TODO:
-    // otherwise default to English.
+    // language is supported, add it (or the default language) to the request so
+    // that the matching middleware can be used to serve the request.
     if (supportedLanguages.length > 1) {
       const headerValue = req.headers['accept-language']
       const language = pick(supportedLanguages, headerValue, { loose: true })
