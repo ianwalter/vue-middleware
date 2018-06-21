@@ -17,8 +17,6 @@ module.exports = function mercuryVue (options) {
   const {
     // TODO:
     serverConfig,
-    // TODO:
-    clientConfig,
     // The ouput directory specified in the serverBundle's webpack config.
     distPath = join(basedir, 'dist'),
     // The path to the index.html that will be used as a page template.
@@ -31,15 +29,13 @@ module.exports = function mercuryVue (options) {
     // The name of the directory within the dist directory used for static
     // assets.
     staticDir = 'static',
-    // The max amount of 100ms tries that the middleware should attempt to
+    // The max amount of 100ms attempts that the middleware should attempt to
     // wait for the renderer to be created.
-    rendererCheckTries = 600,
+    rendererCheckAttempts = 600,
     // A logger instance used to output information.
     logger = console,
     // An array of language codes that are supported by the application.
     supportedLanguages = [],
-    // A regex used to replace the language code in the generated Webpack files.
-    languageRegex = /(\.)([a-z]{2,})(\.js)/gm,
     // The language code to default to if a request's preferred language isn't
     // supported by the application.
     defaultLanguage = 'en'
@@ -54,14 +50,12 @@ module.exports = function mercuryVue (options) {
   let renderers = {}
   let serverBundles = {}
   let clientManifests = {}
-  function updateRenderers () {
-    keys.forEach(key => {
-      renderers[key] = createBundleRenderer(serverBundles[key], {
-        runInNewContext: false,
-        template: readFileSync(templatePath, 'utf-8'),
-        basedir,
-        clientManifest: clientManifests[key]
-      })
+  function updateRenderer (key) {
+    renderers[key] = createBundleRenderer(serverBundles[key], {
+      runInNewContext: false,
+      template: readFileSync(templatePath, 'utf-8'),
+      basedir,
+      clientManifest: clientManifests[key]
     })
   }
 
@@ -79,9 +73,10 @@ module.exports = function mercuryVue (options) {
     const manifestPath = join(distPath, staticDir, manifestName)
 
     if (development) {
-      // Create an error message for the case when a render
+      // Create an error message for the case when the renderer hasn't been
+      // created after the max number of check attempts.
       createRendererErr = new Error(oneLineTrim`
-        Renderer was not created after ${rendererCheckTries * 100 / 1000}s.
+        Renderer was not created after ${rendererCheckAttempts * 100 / 1000}s.
       `)
 
       // Initialize the mercury-webpack middleware with hooks to update the
@@ -90,12 +85,13 @@ module.exports = function mercuryVue (options) {
       mercuryWebpackMiddlewares[key] = mercuryWebpack({
         ...options,
         serverHook: function webpackServerHook (mfs) {
-          serverBundle = JSON.parse(mfs.readFileSync(bundlePath))
-          updateRenderers()
+          serverBundles[key] = JSON.parse(mfs.readFileSync(bundlePath))
+          updateRenderer(key)
         },
         clientHook: function webpackClientHook ({ fileSystem }) {
-          clientManifest = JSON.parse(fileSystem.readFileSync(manifestPath))
-          updateRenderers()
+          const manifest = fileSystem.readFileSync(manifestPath)
+          clientManifests[key] = JSON.parse(manifest)
+          updateRenderer(key)
         }
       })
     } else {
@@ -103,7 +99,7 @@ module.exports = function mercuryVue (options) {
       // clientManfiest to create the renderer.
       serverBundle[key] = require(bundlePath)
       clientMaifest[key] = require(manifestPath)
-      updateRenderers()
+      updateRenderer(key)
     }
   })
 
@@ -139,14 +135,14 @@ module.exports = function mercuryVue (options) {
           logger.info('Waiting for the renderer to be created...')
 
           // Check for the renderer to be defined in 100ms intervals up until
-          // the max tries is reached.
-          let tries = 0
+          // the max number of attempts is reached.
+          let attempts = 0
           let rendererCheckInterval = setInterval(() => {
-            tries++
+            attempts++
             if (renderers[req.languageCode]) {
               clearInterval(rendererCheckInterval)
               sendPage(req, res, next)
-            } else if (tries === rendererCheckTries) {
+            } else if (attempts === rendererCheckAttempts) {
               clearInterval(rendererCheckInterval)
               next(createRendererErr)
             }
