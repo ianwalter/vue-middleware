@@ -98,8 +98,8 @@ module.exports = function mercuryVue (options) {
     } else {
       // If not in development mode, use the pre-built serverBundle and
       // clientManfiest to create the renderer.
-      serverBundle[key] = require(bundlePath)
-      clientMaifest[key] = require(manifestPath)
+      serverBundles[key] = require(bundlePath)
+      clientManifests[key] = require(manifestPath)
       updateRenderer(key)
     }
   })
