@@ -166,7 +166,7 @@ module.exports = function mercuryVue (options) {
     // preferred language from the Accept-Language header. If the preferred
     // language is supported, add it (or the default language) to the request so
     // that the matching middleware can be used to serve the request.
-    if (supportedLanguages.length > 1) {
+    if (supportedLanguages.length > 0) {
       const headerValue = req.headers['accept-language']
       const language = pick(supportedLanguages, headerValue, { loose: true })
       req.languageCode = language || defaultLanguage
