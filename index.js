@@ -15,8 +15,6 @@ module.exports = function mercuryVue (options) {
 
   // Destructure options into variables with defaults.
   const {
-    // The server's Webpack config.
-    serverConfig,
     // The ouput directory specified in the serverBundle's webpack config.
     distPath = join(basedir, 'dist'),
     // The path to the index.html that will be used as a page template.
@@ -43,9 +41,7 @@ module.exports = function mercuryVue (options) {
 
   // Create the keys array used to create the necessary renderers based on
   // whether the serverConfig is a multi-compiler config or not.
-  const keys = Array.isArray(serverConfig)
-    ? serverConfig.map(c => c.name)
-    : ['default']
+  const keys = supportedLanguages.length ? supportedLanguages : ['default']
 
   // Update the renderer when the serverBundle or clientManifest changes.
   let renderers = {}
