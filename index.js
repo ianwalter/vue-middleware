@@ -36,7 +36,7 @@ module.exports = function mercuryVue (options) {
     supportedLanguages = [],
     // The language code to default to if a request's preferred language isn't
     // supported by the application.
-    defaultLanguage = 'en'
+    defaultLanguage = options.supportedLanguages[0]
   } = options
 
   // Create the keys array used to create the necessary renderers based on
