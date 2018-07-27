@@ -19,9 +19,17 @@ module.exports = function mercuryVue (options) {
     distPath = join(basedir, 'dist'),
     // The path to the index.html that will be used as a page template.
     templatePath = join(basedir, 'index.html'),
-    // A function used to extract data form the request in order to render a
-    // page specific to that request.
-    createContext = req => ({ url: req.url }),
+    // A function used to generate and send the server-rendered response.
+    sendResponse = async (req, res, next, renderer) => {
+      try {
+        // Use the renderer to generate HTML and send it to the client.
+        res
+          .type('text/html')
+          .send(await renderer.renderToString({ url: req.url }))
+      } catch (err) {
+        next(err)
+      }
+    },
     // A boolean describing whether to operate in development mode or not.
     development = !NODE_ENV || NODE_ENV === 'development',
     // The name of the directory within the dist directory used for static
@@ -100,20 +108,6 @@ module.exports = function mercuryVue (options) {
     }
   })
 
-  // Renders a page based on the request context and sends it to the client.
-  async function sendPage (req, res, next) {
-    // Create the context object used to pass data to the renderer.
-    const context = createContext(req, res)
-
-    try {
-      // Use the renderer to generate HTML and send it to the client.
-      let html = await renderers[req.languageCode].renderToString(context)
-      res.type('text/html').send(html)
-    } catch (err) {
-      next(err)
-    }
-  }
-
   async function mercuryVueMiddleware (err, req, res, next) {
     if (err || req.method !== 'GET') {
       // If there is an error or the request method is not GET, continue to the
@@ -125,7 +119,7 @@ module.exports = function mercuryVue (options) {
         if (renderers[req.languageCode]) {
           // If the renderer already exists, go ahead and generate the page and
           // send it in the response.
-          sendPage(req, res, next)
+          sendResponse(req, res, next, renderers[req.languageCode])
         } else {
           // Notify the user that the middleware is waiting for the renderer to
           // be created.
@@ -138,7 +132,7 @@ module.exports = function mercuryVue (options) {
             attempts++
             if (renderers[req.languageCode]) {
               clearInterval(rendererCheckInterval)
-              sendPage(req, res, next)
+              sendResponse(req, res, next, renderers[req.languageCode])
             } else if (attempts === rendererCheckAttempts) {
               clearInterval(rendererCheckInterval)
               next(createRendererErr)
