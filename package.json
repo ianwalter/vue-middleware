@@ -29,7 +29,7 @@
     "url": "git@github.com:appjumpstart/mercury-vue.git"
   },
   "dependencies": {
-    "@appjumpstart/mercury-webpack": "^2.0.0",
+    "@appjumpstart/mercury-webpack": "^2.0.1",
     "accept-language-parser": "^1.5.0",
     "common-tags": "^1.7.2",
     "vue-server-renderer": "^2.5.16"

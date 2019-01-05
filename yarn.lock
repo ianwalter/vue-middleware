@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@appjumpstart/mercury-webpack@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@appjumpstart/mercury-webpack/-/mercury-webpack-2.0.0.tgz#f096c130547d5c8e4c38f7b2f8a881b71110b078"
-  integrity sha512-Nmj5vTbhnr8IEf/WMvmeC7p6kyL8mEmYxbt1VX/K9b7cjBhMCIy53HAgHwvJD7AhZfh8s8rQ83wyaZ0VuDAqBA==
+"@appjumpstart/mercury-webpack@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@appjumpstart/mercury-webpack/-/mercury-webpack-2.0.1.tgz#4d18039dac3c8f0b77b69485d7e0d90ad94f4e6b"
+  integrity sha512-F/xxt23CXv61Ysb+cJzmLLA6ExmjyX+Z/+N21CztykdUiEv0cd8gytKXMkcyVmWo8GQCWp99hXUPYuGocOgz0A==
   dependencies:
     common-tags "^1.8.0"
     memory-fs "^0.4.1"
