@@ -29,7 +29,7 @@
     "@appjumpstart/mercury-webpack": "^2.0.1",
     "accept-language-parser": "^1.5.0",
     "common-tags": "^1.7.2",
-    "vue-server-renderer": "^2.5.16"
+    "vue-server-renderer": "^2.6.10"
   },
   "devDependencies": {
     "@ianwalter/bff": "^5.2.1",
