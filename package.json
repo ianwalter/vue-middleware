@@ -1,14 +1,11 @@
 {
-  "name": "@appjumpstart/mercury-vue",
+  "name": "@ianwalter/vue-middleware",
   "version": "2.2.1",
   "description": "An Express/Connect-compatible middleware for easy Vue.js Server-Side Rendering (SSR)",
   "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
   "scripts": {
-    "test": "jest",
-    "lint": "eslint --ext js ."
+    "lint": "eslint .",
+    "test": "bff"
   },
   "keywords": [
     "webpack",
@@ -35,29 +32,19 @@
     "vue-server-renderer": "^2.5.16"
   },
   "devDependencies": {
-    "eslint": "^5.10.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-jest": "^22.1.2",
-    "eslint-plugin-node": "^8.0.1",
-    "eslint-plugin-promise": "^4.0.1",
-    "eslint-plugin-standard": "^4.0.0",
-    "jest": "^24.1.0",
+    "@ianwalter/eslint-config": "^2.0.1",
+    "@ianwalter/renovate-config": "^1.1.0",
     "np": "^5.0.1"
-  },
-  "jest": {
-    "testEnvironment": "node"
   },
   "eslintConfig": {
     "root": true,
-    "env": {
-      "jest/globals": true
-    },
     "extends": [
-      "standard"
-    ],
-    "plugins": [
-      "jest"
+      "@ianwalter"
+    ]
+  },
+  "renovate": {
+    "extends": [
+      "@ianwalter"
     ]
   }
 }

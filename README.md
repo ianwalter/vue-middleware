@@ -1,4 +1,4 @@
-# mercury-vue
+# @ianwalter/vue-middleware
 > An Express/Connect-compatible middleware for easy Vue.js Server-Side
 > Rendering (SSR)
 
@@ -6,4 +6,4 @@
 
 Apache 2.0 with Commons Clause - See [LICENSE][licenseUrl]
 
-[licenseUrl]: https://github.com/appjumpstart/mercury-vue/blob/master/LICENSE
+[licenseUrl]: https://github.com/ianwalter/vue-middleware/blob/master/LICENSE
