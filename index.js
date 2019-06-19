@@ -2,7 +2,7 @@ const { readFileSync } = require('fs')
 const { join, dirname } = require('path')
 const { oneLineTrim } = require('common-tags')
 
-const mercuryWebpack = require('@appjumpstart/mercury-webpack')
+const webpackMiddleware = require('@ianwalter/webpack-middleware')
 const { createBundleRenderer } = require('vue-server-renderer')
 const { pick } = require('accept-language-parser')
 
@@ -65,7 +65,7 @@ module.exports = function mercuryVue (options) {
   }
 
   let createRendererErr
-  let mercuryWebpackMiddlewares = {}
+  let webpackMiddlewares = {}
   keys.forEach(key => {
     // Set serverBundle and clientManifest paths.
     const bundleName = key === 'default'
@@ -87,7 +87,7 @@ module.exports = function mercuryVue (options) {
       // Initialize the mercury-webpack middleware with hooks to update the
       // renderer when webpack-dev-server has re-generated the serverBundle or
       // clientManifest.
-      mercuryWebpackMiddlewares[key] = mercuryWebpack({
+      webpackMiddlewares[key] = webpackMiddleware({
         ...options,
         serverHook: function webpackServerHook (mfs) {
           serverBundles[key] = JSON.parse(mfs.readFileSync(bundlePath))
@@ -150,7 +150,7 @@ module.exports = function mercuryVue (options) {
   // before routing the request through the mercury-vue middleware.
   return function mercuryVuePassthrough (req, res, next) {
     // Default to the single compiler MercuryWebpackMiddleware instance.
-    let mercuryWebpackMiddleware = mercuryWebpackMiddlewares['default']
+    let mercuryWebpackMiddleware = webpackMiddlewares['default']
 
     // If there are multiple supported languages, try to determine the
     // preferred language from the Accept-Language header. If the preferred
@@ -160,7 +160,7 @@ module.exports = function mercuryVue (options) {
       const headerValue = req.headers['accept-language']
       const language = pick(supportedLanguages, headerValue, { loose: true })
       req.languageCode = language || defaultLanguage
-      mercuryWebpackMiddleware = mercuryWebpackMiddlewares[req.languageCode]
+      mercuryWebpackMiddleware = webpackMiddlewares[req.languageCode]
     }
 
     if (mercuryWebpackMiddleware) {
