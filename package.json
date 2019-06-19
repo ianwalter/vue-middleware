@@ -1,6 +1,6 @@
 {
   "name": "@ianwalter/vue-middleware",
-  "version": "2.2.1",
+  "version": "3.0.0-0",
   "description": "An Express/Connect-compatible middleware for easy Vue.js Server-Side Rendering (SSR)",
   "main": "index.js",
   "scripts": {
