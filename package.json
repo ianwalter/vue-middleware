@@ -32,10 +32,16 @@
     "vue-server-renderer": "^2.6.10"
   },
   "devDependencies": {
-    "@ianwalter/bff": "^5.2.1",
+    "@ianwalter/bff": "ianwalter/bff#v6-dev",
     "@ianwalter/eslint-config": "^2.0.1",
     "@ianwalter/renovate-config": "^1.1.0",
-    "np": "^5.0.3"
+    "express": "^4.17.1",
+    "np": "^5.0.3",
+    "supertest": "^4.0.2",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.0",
+    "vue-router": "^3.0.6",
+    "webpack": "^4.34.0"
   },
   "eslintConfig": {
     "root": true,
