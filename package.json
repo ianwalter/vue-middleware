@@ -40,7 +40,7 @@
     "vue": "^2.6.10",
     "vue-loader": "^15.7.1",
     "vue-router": "^3.0.7",
-    "webpack": "^4.39.0"
+    "webpack": "^4.39.1"
   },
   "eslintConfig": {
     "root": true,
