@@ -52,9 +52,9 @@ module.exports = function VueMiddleware (options) {
   const keys = supportedLanguages.length ? supportedLanguages : ['default']
 
   // Update the renderer when the serverBundle or clientManifest changes.
-  let renderers = {}
-  let serverBundles = {}
-  let clientManifests = {}
+  const renderers = {}
+  const serverBundles = {}
+  const clientManifests = {}
   function updateRenderer (key) {
     renderers[key] = createBundleRenderer(serverBundles[key], {
       runInNewContext: false,
@@ -65,7 +65,7 @@ module.exports = function VueMiddleware (options) {
   }
 
   let createRendererErr
-  let webpackMiddlewares = {}
+  const webpackMiddlewares = {}
   keys.forEach(key => {
     // Set serverBundle and clientManifest paths.
     const bundleName = key === 'default'
@@ -129,7 +129,7 @@ module.exports = function VueMiddleware (options) {
           // Check for the renderer to be defined in 100ms intervals up until
           // the max number of attempts is reached.
           let attempts = 0
-          let rendererCheckInterval = setInterval(() => {
+          const rendererCheckInterval = setInterval(() => {
             attempts++
             if (renderers[req.languageCode]) {
               clearInterval(rendererCheckInterval)
@@ -151,7 +151,7 @@ module.exports = function VueMiddleware (options) {
   // before routing the request through the mercury-vue middleware.
   return function vueMiddlewarePassthrough (req, res, next) {
     // Default to the single compiler MercuryWebpackMiddleware instance.
-    let webpackMiddleware = webpackMiddlewares['default']
+    let webpackMiddleware = webpackMiddlewares.default
 
     // If there are multiple supported languages, try to determine the
     // preferred language from the Accept-Language header. If the preferred
