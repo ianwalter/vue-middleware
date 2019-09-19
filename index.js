@@ -2,13 +2,13 @@ const { readFileSync } = require('fs')
 const { join, dirname } = require('path')
 const { oneLineTrim } = require('common-tags')
 
-const webpackMiddleware = require('@ianwalter/webpack-middleware')
+const WebpackMiddleware = require('@ianwalter/webpack-middleware')
 const { createBundleRenderer } = require('vue-server-renderer')
 const { pick } = require('accept-language-parser')
 
 const { NODE_ENV } = process.env
 
-module.exports = function mercuryVue (options) {
+module.exports = function VueMiddleware (options) {
   // Set the base directory as the directory containing the module that has
   // imported this module.
   const basedir = dirname(module.parent.filename)
@@ -44,7 +44,7 @@ module.exports = function mercuryVue (options) {
     supportedLanguages = [],
     // The language code to default to if a request's preferred language isn't
     // supported by the application.
-    defaultLanguage = options.supportedLanguages[0]
+    defaultLanguage = supportedLanguages[0]
   } = options
 
   // Create the keys array used to create the necessary renderers based on
@@ -87,9 +87,10 @@ module.exports = function mercuryVue (options) {
       // Initialize the mercury-webpack middleware with hooks to update the
       // renderer when webpack-dev-server has re-generated the serverBundle or
       // clientManifest.
-      webpackMiddlewares[key] = webpackMiddleware({
+      webpackMiddlewares[key] = WebpackMiddleware({
         ...options,
         serverHook: function webpackServerHook (mfs) {
+          console.log('bundlePath', bundlePath)
           serverBundles[key] = JSON.parse(mfs.readFileSync(bundlePath))
           updateRenderer(key)
         },
@@ -108,7 +109,7 @@ module.exports = function mercuryVue (options) {
     }
   })
 
-  async function mercuryVueMiddleware (err, req, res, next) {
+  async function vueMiddleware (err, req, res, next) {
     if (err || req.method !== 'GET') {
       // If there is an error or the request method is not GET, continue to the
       // next middleware/handler since no processing needs to be done in those
@@ -148,9 +149,9 @@ module.exports = function mercuryVue (options) {
   // Return a passthrough middleware function that will optionally route the
   // request through the mercury-webpack middleware if in development mode
   // before routing the request through the mercury-vue middleware.
-  return function mercuryVuePassthrough (req, res, next) {
+  return function vueMiddlewarePassthrough (req, res, next) {
     // Default to the single compiler MercuryWebpackMiddleware instance.
-    let mercuryWebpackMiddleware = webpackMiddlewares.default
+    let webpackMiddleware = webpackMiddlewares.default
 
     // If there are multiple supported languages, try to determine the
     // preferred language from the Accept-Language header. If the preferred
@@ -160,14 +161,13 @@ module.exports = function mercuryVue (options) {
       const headerValue = req.headers['accept-language']
       const language = pick(supportedLanguages, headerValue, { loose: true })
       req.languageCode = language || defaultLanguage
-      mercuryWebpackMiddleware = webpackMiddlewares[req.languageCode]
+      webpackMiddleware = webpackMiddlewares[req.languageCode]
     }
 
-    if (mercuryWebpackMiddleware) {
-      const mercuryVueNext = err => mercuryVueMiddleware(err, req, res, next)
-      mercuryWebpackMiddleware(req, res, mercuryVueNext)
+    if (webpackMiddleware) {
+      webpackMiddleware(req, res, err => vueMiddleware(err, req, res, next))
     } else {
-      mercuryVueMiddleware(null, req, res, next)
+      vueMiddleware(null, req, res, next)
     }
   }
 }
