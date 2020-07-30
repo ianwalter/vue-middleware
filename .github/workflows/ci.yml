@@ -4,13 +4,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     container:
-      image: node:12.9-slim
+      image: ianwalter/pnpm:v1.1.0
     steps:
       - name: Checkout
         uses: actions/checkout@master
       - name: Install
-        run: yarn
+        run: pnpm i
       - name: Lint
-        run: yarn lint
+        run: pnpm lint
       - name: Test
-        run: yarn test
+        run: pnpm t
