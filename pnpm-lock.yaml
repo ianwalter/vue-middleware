@@ -11,9 +11,9 @@ devDependencies:
   express: 4.17.1
   supertest: 4.0.2
   vue: 2.6.12
-  vue-loader: 15.9.3_webpack@4.44.1
+  vue-loader: 15.9.3_webpack@4.44.2
   vue-router: 3.4.3
-  webpack: 4.44.1_webpack@4.44.1
+  webpack: 4.44.2_webpack@4.44.2
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.10.4:
@@ -5224,6 +5224,26 @@ packages:
       webpack: 4.44.1_webpack@4.44.1
       webpack-sources: 1.4.3
       worker-farm: 1.7.0
+    dev: false
+    engines:
+      node: '>= 6.9.0'
+    peerDependencies:
+      webpack: ^4.0.0
+    resolution:
+      integrity: sha512-U4mACBHIegmfoEe5fdongHESNJWqsGU+W0S/9+BmYGVQDw1+c2Ow05TpMhxjPK1sRb7cuYq1BPl1e5YHJMTCqA==
+  /terser-webpack-plugin/1.4.4_webpack@4.44.2:
+    dependencies:
+      cacache: 12.0.4
+      find-cache-dir: 2.1.0
+      is-wsl: 1.1.0
+      schema-utils: 1.0.0
+      serialize-javascript: 3.1.0
+      source-map: 0.6.1
+      terser: 4.8.0
+      webpack: 4.44.2_webpack@4.44.2
+      webpack-sources: 1.4.3
+      worker-farm: 1.7.0
+    dev: true
     engines:
       node: '>= 6.9.0'
     peerDependencies:
@@ -5506,14 +5526,14 @@ packages:
     dev: true
     resolution:
       integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
-  /vue-loader/15.9.3_webpack@4.44.1:
+  /vue-loader/15.9.3_webpack@4.44.2:
     dependencies:
       '@vue/component-compiler-utils': 3.2.0
       hash-sum: 1.0.2
       loader-utils: 1.4.0
       vue-hot-reload-api: 2.3.4
       vue-style-loader: 4.1.2
-      webpack: 4.44.1_webpack@4.44.1
+      webpack: 4.44.2_webpack@4.44.2
     dev: true
     peerDependencies:
       cache-loader: '*'
@@ -5666,6 +5686,7 @@ packages:
       terser-webpack-plugin: 1.4.4_webpack@4.44.1
       watchpack: 1.7.4
       webpack-sources: 1.4.3
+    dev: false
     engines:
       node: '>=6.11.5'
     hasBin: true
@@ -5680,6 +5701,46 @@ packages:
         optional: true
     resolution:
       integrity: sha512-4UOGAohv/VGUNQJstzEywwNxqX417FnjZgZJpJQegddzPmTvph37eBIRbRTfdySXzVtJXLJfbMN3mMYhM6GdmQ==
+  /webpack/4.44.2_webpack@4.44.2:
+    dependencies:
+      '@webassemblyjs/ast': 1.9.0
+      '@webassemblyjs/helper-module-context': 1.9.0
+      '@webassemblyjs/wasm-edit': 1.9.0
+      '@webassemblyjs/wasm-parser': 1.9.0
+      acorn: 6.4.1
+      ajv: 6.12.3
+      ajv-keywords: 3.5.2_ajv@6.12.3
+      chrome-trace-event: 1.0.2
+      enhanced-resolve: 4.3.0
+      eslint-scope: 4.0.3
+      json-parse-better-errors: 1.0.2
+      loader-runner: 2.4.0
+      loader-utils: 1.4.0
+      memory-fs: 0.4.1
+      micromatch: 3.1.10
+      mkdirp: 0.5.5
+      neo-async: 2.6.2
+      node-libs-browser: 2.2.1
+      schema-utils: 1.0.0
+      tapable: 1.1.3
+      terser-webpack-plugin: 1.4.4_webpack@4.44.2
+      watchpack: 1.7.4
+      webpack-sources: 1.4.3
+    dev: true
+    engines:
+      node: '>=6.11.5'
+    hasBin: true
+    peerDependencies:
+      webpack: '*'
+      webpack-cli: '*'
+      webpack-command: '*'
+    peerDependenciesMeta:
+      webpack-cli:
+        optional: true
+      webpack-command:
+        optional: true
+    resolution:
+      integrity: sha512-6KJVGlCxYdISyurpQ0IPTklv+DULv05rs2hseIXer6D7KrUicRDLFb4IUM1S6LUAKypPM/nSiVSuv8jHu1m3/Q==
   /which/1.3.1:
     dependencies:
       isexe: 2.0.0
@@ -5801,4 +5862,4 @@ specifiers:
   vue-loader: ^15.9.3
   vue-router: ^3.4.3
   vue-server-renderer: ^2.6.11
-  webpack: ^4.44.1
+  webpack: ^4.44.2
