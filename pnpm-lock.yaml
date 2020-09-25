@@ -9,7 +9,7 @@ devDependencies:
   '@ianwalter/release': 5.0.2
   '@ianwalter/renovate-config': 1.4.0
   express: 4.17.1
-  supertest: 4.0.2
+  supertest: 5.0.0
   vue: 2.6.12
   vue-loader: 15.9.3_webpack@4.44.2
   vue-router: 3.4.4
@@ -1488,12 +1488,6 @@ packages:
       ms: 2.0.0
     resolution:
       integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==
-  /debug/3.2.6:
-    dependencies:
-      ms: 2.1.2
-    dev: true
-    resolution:
-      integrity: sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
   /debug/4.1.1:
     dependencies:
       ms: 2.1.2
@@ -2245,10 +2239,6 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-Jqcarwc7OfshJxcnRhMcJwQCjbg=
-  /extend/3.0.2:
-    dev: true
-    resolution:
-      integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==
   /extglob/2.0.4:
     dependencies:
       array-unique: 0.3.2
@@ -2286,6 +2276,10 @@ packages:
     dev: true
     resolution:
       integrity: sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
+  /fast-safe-stringify/2.0.7:
+    dev: true
+    resolution:
+      integrity: sha512-Utm6CdzT+6xsDk2m8S6uL8VHxNwI6Jub+e9NYTcAms28T84pTa25GJQV9j0CY0N1rM8hK4x6grpF2BQf+2qwVA==
   /fastq/1.8.0:
     dependencies:
       reusify: 1.0.4
@@ -2402,16 +2396,16 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
-  /form-data/2.5.1:
+  /form-data/3.0.0:
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.27
     dev: true
     engines:
-      node: '>= 0.12'
+      node: '>= 6'
     resolution:
-      integrity: sha512-m21N3WOmEEURgk6B9GLOE4RuWOFf28Lhh9qGYeNlGq4VDXUlJy2th2slBNU8Gp8EzloYZOibZJ7t5ecIrFSjVA==
+      integrity: sha512-CKMFDglpbMi6PyN+brwB9Q/GOw0eAnsrEZDgcsH5Krhz5Od/haKHAX0NmQfha2zPPz0JpWzA7GJHGSnvCRLWsg==
   /formidable/1.2.2:
     dev: true
     resolution:
@@ -3652,7 +3646,6 @@ packages:
     resolution:
       integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==
   /mime/2.4.6:
-    dev: false
     engines:
       node: '>=4.0.0'
     hasBin: true
@@ -5123,32 +5116,33 @@ packages:
     dev: true
     resolution:
       integrity: sha512-I4bA5mgcb6Fw5UJ+EkpzqXfiuvVGS/7MuND+oBxNFmxu3ugLNrdIatzBLfhFRMVMLxgSsRy+TjIktgkF9RFSNQ==
-  /superagent/3.8.3:
+  /superagent/6.1.0:
     dependencies:
       component-emitter: 1.3.0
       cookiejar: 2.1.2
-      debug: 3.2.6
-      extend: 3.0.2
-      form-data: 2.5.1
+      debug: 4.1.1
+      fast-safe-stringify: 2.0.7
+      form-data: 3.0.0
       formidable: 1.2.2
       methods: 1.1.2
-      mime: 1.6.0
+      mime: 2.4.6
       qs: 6.9.4
-      readable-stream: 2.3.7
+      readable-stream: 3.6.0
+      semver: 7.3.2
     dev: true
     engines:
-      node: '>= 4.0'
+      node: '>= 7.0.0'
     resolution:
-      integrity: sha512-GLQtLMCoEIK4eDv6OGtkOoSMt3D+oq0y3dsxMuYuDvaNUvuT8eFBuLmfR0iYYzHC1e8hpzC6ZsxbuP6DIalMFA==
-  /supertest/4.0.2:
+      integrity: sha512-OUDHEssirmplo3F+1HWKUrUjvnQuA+nZI6i/JJBdXb5eq9IyEQwPyPpqND+SSsxf6TygpBEkUjISVRN4/VOpeg==
+  /supertest/5.0.0:
     dependencies:
       methods: 1.1.2
-      superagent: 3.8.3
+      superagent: 6.1.0
     dev: true
     engines:
       node: '>=6.0.0'
     resolution:
-      integrity: sha512-1BAbvrOZsGA3YTCWqbmh14L0YEq0EGICX/nBnfkfVJn7SrxQV1I3pMYjSzG9y/7ZU2V9dWqyqk2POwxlb09duQ==
+      integrity: sha512-2JAWpPrUOZF4hHH5ZTCN2xjKXvJS3AEwPNXl0HUseHsfcXFvMy9kcsufIHCNAmQ5hlGCvgeAqaR5PBEouN3hlQ==
   /supports-color/2.0.0:
     dev: false
     engines:
@@ -5857,7 +5851,7 @@ specifiers:
   accept-language-parser: ^1.5.0
   common-tags: ^1.8.0
   express: ^4.17.1
-  supertest: ^4.0.2
+  supertest: ^5.0.0
   vue: ^2.6.12
   vue-loader: ^15.9.3
   vue-router: ^3.4.4
