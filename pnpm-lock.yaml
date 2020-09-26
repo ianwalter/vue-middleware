@@ -12,7 +12,7 @@ devDependencies:
   supertest: 5.0.0
   vue: 2.6.12
   vue-loader: 15.9.3_webpack@4.44.2
-  vue-router: 3.4.4
+  vue-router: 3.4.5
   webpack: 4.44.2_webpack@4.44.2
 lockfileVersion: 5.1
 packages:
@@ -5541,10 +5541,10 @@ packages:
         optional: true
     resolution:
       integrity: sha512-Y67VnGGgVLH5Voostx8JBZgPQTlDQeOVBLOEsjc2cXbCYBKexSKEpOA56x0YZofoDOTszrLnIShyOX1p9uCEHA==
-  /vue-router/3.4.4:
+  /vue-router/3.4.5:
     dev: true
     resolution:
-      integrity: sha512-qFfwwLvxUYq+iDJ0UoE8HMnuZEDtIDA+p573brVMb7NZr0t1vhMeMWDTvgF2b8MqAFOc77bNOTSSwYcR4pCZlg==
+      integrity: sha512-ioRY5QyDpXM9TDjOX6hX79gtaMXSVDDzSlbIlyAmbHNteIL81WIVB2e+jbzV23vzxtoV0krdS2XHm+GxFg+Nxg==
   /vue-server-renderer/2.6.11:
     dependencies:
       chalk: 1.1.3
@@ -5854,6 +5854,6 @@ specifiers:
   supertest: ^5.0.0
   vue: ^2.6.12
   vue-loader: ^15.9.3
-  vue-router: ^3.4.4
+  vue-router: ^3.4.5
   vue-server-renderer: ^2.6.11
   webpack: ^4.44.2
