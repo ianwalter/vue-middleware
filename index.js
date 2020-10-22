@@ -1,5 +1,5 @@
 const { readFileSync } = require('fs')
-const { join, dirname } = require('path')
+const path = require('path')
 const { oneLineTrim } = require('common-tags')
 
 const webpackMiddleware = require('@ianwalter/webpack-middleware')
@@ -9,16 +9,13 @@ const { pick } = require('accept-language-parser')
 const { NODE_ENV } = process.env
 
 module.exports = function mercuryVue (options) {
-  // Set the base directory as the directory containing the module that has
-  // imported this module.
-  const basedir = dirname(module.parent.filename)
-
   // Destructure options into variables with defaults.
   const {
+    basedir,
     // The ouput directory specified in the serverBundle's webpack config.
-    distPath = join(basedir, 'dist'),
+    distPath = path.join(basedir, 'dist'),
     // The path to the index.html that will be used as a page template.
-    templatePath = join(basedir, 'index.html'),
+    templatePath = path.join(basedir, 'index.html'),
     // A function used to generate and send the server-rendered response.
     sendResponse = async (req, res, next, renderer) => {
       try {
@@ -44,7 +41,8 @@ module.exports = function mercuryVue (options) {
     supportedLanguages = [],
     // The language code to default to if a request's preferred language isn't
     // supported by the application.
-    defaultLanguage = options.supportedLanguages[0]
+    defaultLanguage = options.supportedLanguages[0],
+    ...rest
   } = options
 
   // Create the keys array used to create the necessary renderers based on
@@ -60,7 +58,8 @@ module.exports = function mercuryVue (options) {
       runInNewContext: false,
       template: readFileSync(templatePath, 'utf-8'),
       basedir,
-      clientManifest: clientManifests[key]
+      clientManifest: clientManifests[key],
+      ...rest
     })
   }
 
@@ -71,11 +70,11 @@ module.exports = function mercuryVue (options) {
     const bundleName = key === 'default'
       ? 'vue-ssr-server-bundle.json'
       : `vue-ssr-server-bundle.${key}.json`
-    const bundlePath = join(distPath, bundleName)
+    const bundlePath = path.join(distPath, bundleName)
     const manifestName = key === 'default'
       ? 'vue-ssr-client-manifest.json'
       : `vue-ssr-client-manifest.${key}.json`
-    const manifestPath = join(distPath, staticDir, manifestName)
+    const manifestPath = path.join(distPath, staticDir, manifestName)
 
     if (development) {
       // Create an error message for the case when the renderer hasn't been
