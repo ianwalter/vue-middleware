@@ -11,9 +11,9 @@ devDependencies:
   express: 4.17.1
   supertest: 5.0.0
   vue: 2.6.12
-  vue-loader: 15.9.3_webpack@5.1.3
+  vue-loader: 15.9.3_webpack@5.2.0
   vue-router: 3.4.7
-  webpack: 5.1.3_webpack@5.1.3
+  webpack: 5.2.0_webpack@5.2.0
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.10.4:
@@ -1991,7 +1991,7 @@ packages:
       node: '>=6.9.0'
     resolution:
       integrity: sha512-3e87LvavsdxyoCfGusJnrZ5G8SLPOFeHSNpZI/ATL9a5leXo2k0w6MKnbqhdBad9qTobSfB20Ld7UmgoNbAZkQ==
-  /enhanced-resolve/5.2.0:
+  /enhanced-resolve/5.3.0:
     dependencies:
       graceful-fs: 4.2.4
       tapable: 2.0.0
@@ -1999,7 +1999,7 @@ packages:
     engines:
       node: '>=10.13.0'
     resolution:
-      integrity: sha512-NZlGLl8DxmZoq0uqPPtJfsCAir68uR047+Udsh1FH4+5ydGQdMurn/A430A1BtxASVmMEuS7/XiJ5OxJ9apAzQ==
+      integrity: sha512-EENz3E701+77g0wfbOITeI8WLPNso2kQNMBIBEi/TH/BEa9YXtS01X7sIEk5XXsfFq1jNkhIpu08hBPH1TRLIQ==
   /enquirer/2.3.6:
     dependencies:
       ansi-colors: 4.1.1
@@ -5619,7 +5619,7 @@ packages:
       webpack: ^4.0.0
     resolution:
       integrity: sha512-U4mACBHIegmfoEe5fdongHESNJWqsGU+W0S/9+BmYGVQDw1+c2Ow05TpMhxjPK1sRb7cuYq1BPl1e5YHJMTCqA==
-  /terser-webpack-plugin/5.0.0_webpack@5.1.3:
+  /terser-webpack-plugin/5.0.0_webpack@5.2.0:
     dependencies:
       jest-worker: 26.5.0
       p-limit: 3.0.2
@@ -5627,7 +5627,7 @@ packages:
       serialize-javascript: 5.0.1
       source-map: 0.6.1
       terser: 5.3.5
-      webpack: 5.1.3_webpack@5.1.3
+      webpack: 5.2.0_webpack@5.2.0
     dev: true
     engines:
       node: '>= 10.13.0'
@@ -5935,14 +5935,14 @@ packages:
     dev: true
     resolution:
       integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
-  /vue-loader/15.9.3_webpack@5.1.3:
+  /vue-loader/15.9.3_webpack@5.2.0:
     dependencies:
       '@vue/component-compiler-utils': 3.2.0
       hash-sum: 1.0.2
       loader-utils: 1.4.0
       vue-hot-reload-api: 2.3.4
       vue-style-loader: 4.1.2
-      webpack: 5.1.3_webpack@5.1.3
+      webpack: 5.2.0_webpack@5.2.0
     dev: true
     peerDependencies:
       cache-loader: '*'
@@ -6131,7 +6131,7 @@ packages:
         optional: true
     resolution:
       integrity: sha512-4UOGAohv/VGUNQJstzEywwNxqX417FnjZgZJpJQegddzPmTvph37eBIRbRTfdySXzVtJXLJfbMN3mMYhM6GdmQ==
-  /webpack/5.1.3_webpack@5.1.3:
+  /webpack/5.2.0_webpack@5.2.0:
     dependencies:
       '@types/eslint-scope': 3.7.0
       '@types/estree': 0.0.45
@@ -6142,7 +6142,7 @@ packages:
       acorn: 8.0.4
       browserslist: 4.14.5
       chrome-trace-event: 1.0.2
-      enhanced-resolve: 5.2.0
+      enhanced-resolve: 5.3.0
       eslint-scope: 5.1.1
       events: 3.2.0
       glob-to-regexp: 0.4.1
@@ -6154,7 +6154,7 @@ packages:
       pkg-dir: 4.2.0
       schema-utils: 3.0.0
       tapable: 2.0.0
-      terser-webpack-plugin: 5.0.0_webpack@5.1.3
+      terser-webpack-plugin: 5.0.0_webpack@5.2.0
       watchpack: 2.0.0
       webpack-sources: 2.0.1
     dev: true
@@ -6168,7 +6168,7 @@ packages:
       webpack-cli:
         optional: true
     resolution:
-      integrity: sha512-bNBF5EOpt5a6NeCBFu0+8KJtG61cVmOb2b/a5tPNRLz3OWgDpHMbmnDkaSm3nf/UQ6ufw4PWYGVsVOAi8UfL2A==
+      integrity: sha512-evtOjOJQq3zaHJIWsJjM4TGtNHtSrNVAIyQ+tdPW/fRd+4PLGbUG6S3xt+N4+QwDBOaCVd0xCWiHd4R6lWO5DQ==
   /which/1.3.1:
     dependencies:
       isexe: 2.0.0
@@ -6294,4 +6294,4 @@ specifiers:
   vue-loader: ^15.9.3
   vue-router: ^3.4.7
   vue-server-renderer: ^2.6.11
-  webpack: ^5.1.3
+  webpack: ^5.2.0
