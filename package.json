@@ -36,11 +36,11 @@
     "@ianwalter/release": "^5.0.2",
     "@ianwalter/renovate-config": "^1.4.2",
     "express": "^4.17.1",
-    "supertest": "^5.0.0",
+    "supertest": "^6.0.1",
     "vue": "^2.6.12",
-    "vue-loader": "^15.9.3",
-    "vue-router": "^3.4.8",
-    "webpack": "^5.2.0"
+    "vue-loader": "^15.9.5",
+    "vue-router": "^3.4.9",
+    "webpack": "^5.4.0"
   },
   "eslintConfig": {
     "root": true,
