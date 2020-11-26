@@ -11,9 +11,9 @@ devDependencies:
   express: 4.17.1
   supertest: 6.0.1
   vue: 2.6.12
-  vue-loader: 15.9.5_webpack@5.6.0
+  vue-loader: 15.9.5_webpack@5.7.0
   vue-router: 3.4.9
-  webpack: 5.6.0
+  webpack: 5.7.0
 lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.10.4:
@@ -5630,7 +5630,7 @@ packages:
       webpack: ^4.0.0
     resolution:
       integrity: sha512-U4mACBHIegmfoEe5fdongHESNJWqsGU+W0S/9+BmYGVQDw1+c2Ow05TpMhxjPK1sRb7cuYq1BPl1e5YHJMTCqA==
-  /terser-webpack-plugin/5.0.3_webpack@5.6.0:
+  /terser-webpack-plugin/5.0.3_webpack@5.7.0:
     dependencies:
       jest-worker: 26.6.1
       p-limit: 3.0.2
@@ -5638,7 +5638,7 @@ packages:
       serialize-javascript: 5.0.1
       source-map: 0.6.1
       terser: 5.3.8
-      webpack: 5.6.0
+      webpack: 5.7.0
     dev: true
     engines:
       node: '>= 10.13.0'
@@ -5946,14 +5946,14 @@ packages:
     dev: true
     resolution:
       integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
-  /vue-loader/15.9.5_webpack@5.6.0:
+  /vue-loader/15.9.5_webpack@5.7.0:
     dependencies:
       '@vue/component-compiler-utils': 3.2.0
       hash-sum: 1.0.2
       loader-utils: 1.4.0
       vue-hot-reload-api: 2.3.4
       vue-style-loader: 4.1.2
-      webpack: 5.6.0
+      webpack: 5.7.0
     dev: true
     peerDependencies:
       cache-loader: '*'
@@ -6141,7 +6141,7 @@ packages:
         optional: true
     resolution:
       integrity: sha512-4UOGAohv/VGUNQJstzEywwNxqX417FnjZgZJpJQegddzPmTvph37eBIRbRTfdySXzVtJXLJfbMN3mMYhM6GdmQ==
-  /webpack/5.6.0:
+  /webpack/5.7.0:
     dependencies:
       '@types/eslint-scope': 3.7.0
       '@types/estree': 0.0.45
@@ -6164,7 +6164,7 @@ packages:
       pkg-dir: 4.2.0
       schema-utils: 3.0.0
       tapable: 2.0.0
-      terser-webpack-plugin: 5.0.3_webpack@5.6.0
+      terser-webpack-plugin: 5.0.3_webpack@5.7.0
       watchpack: 2.0.0
       webpack-sources: 2.1.1
     dev: true
@@ -6177,7 +6177,7 @@ packages:
       webpack-cli:
         optional: true
     resolution:
-      integrity: sha512-SIeFuBhuheKElRbd84O35UhKc0nxlgSwtzm2ksZ0BVhRJqxVJxEguT/pYhfiR0le/pxTa1VsCp7EOYyTsa6XOA==
+      integrity: sha512-U0AshArzQX5X+L2eViVEjrE7nNLUs80BQYcPUyRnaUMT2EyZiIbXAYWL7GLx6qRu0ykxAwXytRoC1+jqWQZExw==
   /which/1.3.1:
     dependencies:
       isexe: 2.0.0
@@ -6303,4 +6303,4 @@ specifiers:
   vue-loader: ^15.9.5
   vue-router: ^3.4.9
   vue-server-renderer: ^2.6.12
-  webpack: ^5.6.0
+  webpack: ^5.7.0
