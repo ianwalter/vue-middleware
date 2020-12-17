@@ -11,7 +11,7 @@ devDependencies:
   express: 4.17.1
   supertest: 6.0.1
   vue: 2.6.12
-  vue-loader: 15.9.5_webpack@5.10.3
+  vue-loader: 15.9.6_webpack@5.10.3
   vue-router: 3.4.9
   webpack: 5.10.3
 lockfileVersion: 5.2
@@ -6407,7 +6407,7 @@ packages:
     dev: true
     resolution:
       integrity: sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
-  /vue-loader/15.9.5_webpack@5.10.3:
+  /vue-loader/15.9.6_webpack@5.10.3:
     dependencies:
       '@vue/component-compiler-utils': 3.2.0
       hash-sum: 1.0.2
@@ -6427,7 +6427,7 @@ packages:
       vue-template-compiler:
         optional: true
     resolution:
-      integrity: sha512-oeMOs2b5o5gRqkxfds10bCx6JeXYTwivRgbb8hzOrcThD2z1+GqEKE3EX9A2SGbsYDf4rXwRg6D5n1w0jO5SwA==
+      integrity: sha512-j0cqiLzwbeImIC6nVIby2o/ABAWhlppyL/m5oJ67R5MloP0hj/DtFgb0Zmq3J9CG7AJ+AXIvHVnJAPBvrLyuDg==
   /vue-router/3.4.9:
     dev: true
     resolution:
@@ -6753,7 +6753,7 @@ specifiers:
   express: ^4.17.1
   supertest: ^6.0.1
   vue: ^2.6.12
-  vue-loader: ^15.9.5
+  vue-loader: ^15.9.6
   vue-router: ^3.4.9
   vue-server-renderer: ^2.6.12
   webpack: ^5.10.3
