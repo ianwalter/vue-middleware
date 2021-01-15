@@ -36,7 +36,7 @@
     "@ianwalter/release": "^5.0.2",
     "@ianwalter/renovate-config": "^1.4.2",
     "express": "^4.17.1",
-    "supertest": "^6.0.1",
+    "supertest": "^6.1.0",
     "vue": "^2.6.12",
     "vue-loader": "^15.9.6",
     "vue-router": "^3.4.9",
