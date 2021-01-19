@@ -9,7 +9,7 @@ devDependencies:
   '@ianwalter/release': 5.0.2
   '@ianwalter/renovate-config': 1.4.3
   express: 4.17.1
-  supertest: 6.1.0
+  supertest: 6.1.1
   vue: 2.6.12
   vue-loader: 15.9.6_webpack@5.16.0
   vue-router: 3.4.9
@@ -5963,15 +5963,16 @@ packages:
       node: '>= 7.0.0'
     resolution:
       integrity: sha512-OUDHEssirmplo3F+1HWKUrUjvnQuA+nZI6i/JJBdXb5eq9IyEQwPyPpqND+SSsxf6TygpBEkUjISVRN4/VOpeg==
-  /supertest/6.1.0:
+  /supertest/6.1.1:
     dependencies:
       methods: 1.1.2
       superagent: 6.1.0
+    deprecated: Please use an older version until https://github.com/visionmedia/supertest/issues/700\#issuecomment-762468002 is investigated
     dev: true
     engines:
       node: '>=6.0.0'
     resolution:
-      integrity: sha512-3l1F78crTryOfgEipLeBljKcIf1JTgs/Rzn9TmxDLCXiFyBq1rELCTyDMOJLc4od3Y1Wpre4TXiSO4p1LpS6lA==
+      integrity: sha512-3WDAWfqdNifCURjGUHZFv3u5nMg5tFtFRCTJOcSZXdlYZ0gqVF3UMhA7IJDP8nDXnR3gocbQ6s0bpiPnsoFeQw==
   /supports-color/2.0.0:
     dev: false
     engines:
@@ -6733,7 +6734,7 @@ specifiers:
   accept-language-parser: ^1.5.0
   common-tags: ^1.8.0
   express: ^4.17.1
-  supertest: ^6.1.0
+  supertest: ^6.1.1
   vue: ^2.6.12
   vue-loader: ^15.9.6
   vue-router: ^3.4.9
