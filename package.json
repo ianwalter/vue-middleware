@@ -39,7 +39,7 @@
     "supertest": "^6.1.1",
     "vue": "^2.6.12",
     "vue-loader": "^15.9.6",
-    "vue-router": "^3.4.9",
+    "vue-router": "^3.5.0",
     "webpack": "^5.17.0"
   },
   "eslintConfig": {
