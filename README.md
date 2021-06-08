@@ -6,4 +6,4 @@
 
 Apache 2.0 with Commons Clause - See [LICENSE][licenseUrl]
 
-[licenseUrl]: https://github.com/ianwalter/vue-middleware/blob/master/LICENSE
+[licenseUrl]: https://github.com/ianwalter/vue-middleware/blob/main/LICENSE
